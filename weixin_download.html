@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>猎聘网</title>
+<style type="text/css">
+body {
+  background: #eee;
+}
+#guide {
+  width: 100%;
+  height: 400px;
+  background-size: 320px 400px;
+}
+.iosguide,
+.iosguidedownload,
+.iosguideopen {
+  background: url(//concat.lietou-static.com/fe-c-h5/v5/static/images/pages/app/iosdownloadfile.png) no-repeat center top;
+}
+.androidguide,
+.androidguidedownload,
+.androidguideopen {
+  background: url(//concat.lietou-static.com/fe-c-h5/v5/static/images/pages/app/androiddownloadfile.png) no-repeat center top;
+}
+</style>
+</head>
+<body>
+
+<script type="text/javascript" src="http://www.zeptojs.cn/zepto.js"></script>
+<script type="text/javascript">
+document.write(unescape("%3Cscript defer='defer' async='async' src='//concat.lietou-static.com/fe-c-h5/v5/static/js/stat.js?v=2.1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+  <div class="view">
+    <div id="guide" class="guide"></div>
+  </div>
+<script type="text/javascript">
+  function getQuery(key, url) {
+    url = url || window.location.href + '';
+    if (url.indexOf('#') !== -1) url = url.substring(0, url.indexOf('#'));
+    var rts = [],
+      rt;
+    var queryReg = new RegExp('(^|\\?|&)' + key + '=([^&]*)(?=&|#|$)', 'g');
+    while ((rt = queryReg.exec(url)) !== null) {
+      rts.push(decodeURIComponent(rt[2]));
+    }
+    if (rts.length === 0) return null;
+    if (rts.length === 1) return rts[0];
+    return rts;
+  }
+  // 跳转职位详情页H5
+  function appGetH5Url(urlStr) {
+    var jobStartIndex = urlStr.indexOf('url');
+    var type = urlStr.substring(0, urlStr.indexOf('?'));
+    var url = jobStartIndex > -1 ? decodeURIComponent(urlStr.substring(jobStartIndex + 4)): '';
+    return {url: url, type: type};
+  }
+  // 未跳转处理函数, 猎聘下载链接
+  function appOvertimeLpHandler () {
+    var type = appGetH5Url(urlStr).type;
+    var url = appGetH5Url(urlStr).url;
+    if(url && type === '6') {
+      window.location.replace(url);
+    } else if (url && type === '9') {
+      window.location.replace(url);
+    } else if (url && type === '80') {
+      window.location.replace(url);
+    } else {
+      window.location.replace(downloadUrl);
+    }
+  }
+  // 未跳转处理函数, 应用宝下载链接
+  function appOvertimeYybHandler () {
+    var type = appGetH5Url(urlStr).type;
+    var url = appGetH5Url(urlStr).url;
+    if(url && type === '6') {
+      window.location.replace(url);
+    } else if (url && type === '9') {
+      window.location.replace(url);
+    } else if (url && type === '80') {
+      window.location.replace(url);
+    } else {
+      window.location.replace(yybUrl);
+    }
+  }
+  var ua = navigator.userAgent,
+    isWeixin = /MicroMessenger/ig.test(ua),
+    isIphone = /iPhone/i.test(ua),
+    isIos = /iPhone|iPad/i.test(ua),
+    isAndroid = ua.match(/android/ig),
+    isIosVersion = isIphone && ua.match(/os\s+(\d+)/i)[1] - 0,
+    urlStr = getQuery('open_target')?getQuery('open_target'):'',
+    openurl = 'lptd://td/openwith/' + urlStr ,
+    downloadUrl = 'https://app-tongdao.liepin.com/p/download/liepinmishu-latest-www-auto',
+    yybUrl = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.lietou.mishu';
+
+  if (isWeixin) {// 微信
+    // 微信 6.6.1 禁用的通用链接
+    // if (isIosVersion && isIosVersion >= 9) {
+    //   // IOS9以上 通用链接唤醒
+    //   window.location.href = 'https://link.liepin.com/td/openwith/' + urlStr;
+    //   setTimeout(appOvertimeYybHandler, 30);
+    // } else {
+      appOvertimeYybHandler();
+    // }
+  } else {// 浏览器
+    // if (isIosVersion && isIosVersion >= 9) {
+        // var checkQQ = function(browser) {
+        //     return ua.toLowerCase().indexOf(browser) > -1;
+        //   };
+        // if(checkQQ('qqbrowser')){
+        //   window.location.href = 'lptd://td/openwith/' + urlStr;
+        // } else {
+        //     window.location.href = 'https://link.liepin.com/td/openwith/' + urlStr;
+        // }
+        // setTimeout(appOvertimeLpHandler, 2000);
+    // } else {
+      window.location.href = openurl;
+      setTimeout(appOvertimeLpHandler, 2000);
+    // }
+  }
+</script>
+<script>
+var _hmt = _hmt || [];
+(function () {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?a2647413544f5a04f00da7eee0d5e200";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</body>
+</html>
